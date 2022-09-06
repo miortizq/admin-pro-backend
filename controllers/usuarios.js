@@ -8,12 +8,42 @@ const Usuario =require('../models/usuario');
 /* Controlador para la petición de GetUsuarios */
 const getUsuarios = async (req, res) => {
     
-    const usuarios = await Usuario.find({},'nombre password role email google');    
+    /* Obtiene del query el parámetro desde. Si este parámetro no existe, por defecto asigna
+       el valor cero a la variable */
+    const desde = Number(req.query.desde) || 0;
+
+    /* Forma1 para la solución:
+        Ejecuta la búsqueda de los usuarios utilizando la paginación.
+       find es la ejecución de la consulta
+       skip es el punto a partir del cual quiero obtener los registros
+       limit es la cantidad e registros que debe retornar la consulta */
+       //const usuarios = await Usuario
+       //.find({},'nombre password role email google')
+       //.skip(desde)    
+       //.limit(5);
+        /* Ejecuta un conteo de la cantidad de registros que contiene la tabla Usuarios */
+        //const total = await Usuario.count();
+
+    /* Forma2 para la solución:
+       En la forma1 debe esperar a que se ejecute primero la consulta de usuarios y al finalizar
+       ejecuta el conteo de usuarios. A pesar de estar en un método asincrónico las operaciones
+       se ejecutan una tras otra.
+       Crea una promesa que retorna un arreglo de respuestas de diferentes operaciones. 
+       La consulta de usuarios y el conteo de usuarios se ejecutan de manera simultanea y finaliza
+       cuando termina el proceso más lento. En un arreglo de respuestas se asignan los valores devueltos
+       por las operaciones de la promesa, mucha más eficiente !!!! */
+    const [usuarios, total] = await Promise.all([
+        Usuario.find({},'nombre role email google img')
+                .skip(desde)    
+                .limit(5),
+        Usuario.countDocuments()
+    ]);
     
     res.json(
         {
             ok: true,
             usuarios,
+            total,
             uid: req.uid
         }
     );
