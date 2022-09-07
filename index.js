@@ -11,6 +11,9 @@ const app = express();
 //Use es un middleware = función que se ejecuta siempre que pasa por este punto
 app.use(cors());
 
+//Carpeta Publica
+app.use( express.static('public'));
+
 //Lectura y Parseo del Body
 app.use(express.json());
 
