@@ -31,10 +31,13 @@ const {getHospitales,crearHospital,actualizarHospital,eliminarHospital} = requir
   /* Ruta para la actualización de Hospitales */
   router.put('/:id', 
   [
+    validarJWT,
+    check('nombre','Nombre hospital es obligatorio').not().isEmpty(),
+    validarCampos
   ], actualizarHospital);
 
     /* Ruta para la eliminación de Hospitales */
-    router.delete('/:id', eliminarHospital);
+    router.delete('/:id', validarJWT, eliminarHospital);
 
 module.exports = router;
 

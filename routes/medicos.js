@@ -31,7 +31,10 @@ const {getMedicos,crearMedico,actualizarMedico,eliminarMedico} = require('../con
 
   /* Ruta para la actualización de Medicos */
   router.put('/:id', 
-  [
+  [ validarJWT,
+    check('nombre','Nombre médico es obligatorio').not().isEmpty(),
+    check('hospital','Hospital Id debe ser válido').isMongoId(),
+    validarCampos 
   ], actualizarMedico);
 
     /* Ruta para la eliminación de Medicos */
