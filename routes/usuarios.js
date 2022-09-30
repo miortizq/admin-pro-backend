@@ -20,7 +20,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
   /* El segundo argumento del router es una coleccion de middlewares que se deben ejecutar */
   router.post('/', 
   [
-    validarJWT,
+    //validarJWT,
     check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('password','El password es obligatorio').not().isEmpty(),
     check('email','El email es obligatorio y debe tener el formato correcto').isEmail(),

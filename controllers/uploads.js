@@ -41,9 +41,9 @@ const fileUpload = (req, res = response) => {
     const extension = nombreCortado[nombreCortado.length - 1];
 
     //Validar extensión
-    const extensionesValidas = ['png','gif','jpg','jpeg'];
-    if (extensionesValidas.includes(extension))
-    {
+    const extensionesValidas = ['png','gif','jpg','JPG','jpeg'];
+    if (!extensionesValidas.includes(extension))
+    {       
         return res.status(400).json({
             ok: false,
             msg: 'El archivo no tiene una extensión válida'

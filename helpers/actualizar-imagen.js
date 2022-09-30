@@ -57,8 +57,6 @@ const actualizarImagen = async (tipo, id, nombreArchivo) => {
         case 'usuarios':
             const usuario = await Usuario.findById(id);
 
-            console.log(usuario);
-
             if (!usuario) {
                 return false;
             }

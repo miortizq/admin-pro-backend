@@ -117,10 +117,7 @@ const updateUsuario = async (req, res = response) => {
 
         /* Se desestructura para extraer de los campos del body los datos que no se requieren
         password y google para este caso. */
-        const {password, google, email, ...campos} = req.body;
-
-        console.log('email1', req.body.email);
-        
+        const {password, google, email, ...campos} = req.body;     
 
         /* Verifica si el email del usuario que llega es igual al email del usuario que se 
         consulta en la BD. De ser así, remueve el parámetro email de los campos */
@@ -137,8 +134,18 @@ const updateUsuario = async (req, res = response) => {
             }
         }
 
-        /* Se adiciona nuevamente el email a los campos */
-        campos.email = email;
+        /* Se adiciona nuevamente el email a los campos siempre y cuando no sea un usuario de 
+           google */
+        if (!usuarioDb.google){
+            campos.email = email;
+        } else if (usuarioDb.email !== email) {
+            return res.status(404).json(
+                {
+                    ok: false,
+                    msg: 'Usuario de google no puede cambiar su correo'
+                }
+            )
+        }        
 
         //Actualizacion
         /* Se adiciona el parametro new: true para que Mongoose me devuelva el registro actualizado,
