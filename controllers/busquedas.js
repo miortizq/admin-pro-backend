@@ -13,9 +13,9 @@ const getTodo = async (req, res = response) => {
         const regexp = new RegExp(dato, 'i');
 
         const [usuarios, medicos, hospitales] = await Promise.all([
-            Usuario.find({"nombre": regexp}, 'nombre'),            
-            Medico.find({"nombre": regexp}, 'nombre'),
-            Hospital.find({"nombre": regexp},'nombre')
+            Usuario.find({"nombre": regexp}, 'nombre email role uid google img'),            
+            Medico.find({"nombre": regexp}, 'nombre uid img'),
+            Hospital.find({"nombre": regexp},'nombre uid img')
         ]);  
         
         return res.json({
@@ -46,17 +46,17 @@ const getDocumentosColeccion = async (req, res = response) => {
 
         switch (tabla) {
             case 'usuarios':
-                data = await Usuario.find({"nombre": regexp}, 'nombre');
+                data = await Usuario.find({"nombre": regexp}, 'nombre email role uid google img');
                 break;
         
             case 'medicos':
-                data = await Medico.find({"nombre": regexp}, 'nombre')
+                data = await Medico.find({"nombre": regexp}, 'nombre img')
                             .populate('usuario', 'nombre img')
                             .populate('hospital', 'nombre img');
                 break;
             
             case 'hospitales':
-                data = await Hospital.find({"nombre": regexp}, 'nombre')
+                data = await Hospital.find({"nombre": regexp}, 'nombre img')
                                 .populate('usuario', 'nombre img');
                 break;
         

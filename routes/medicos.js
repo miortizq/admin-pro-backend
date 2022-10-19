@@ -11,7 +11,7 @@ const router = Router();
 
 const { validarJWT } = require('../middlewares/validar-jwt');
 
-const {getMedicos,crearMedico,actualizarMedico,eliminarMedico} = require('../controllers/medicos');
+const {getMedicos,crearMedico,actualizarMedico,eliminarMedico,getMedicoById} = require('../controllers/medicos');
 
 /*se identifica el método para ejecutar el endpoint (get, post, put, delete, etc)
   se esperan 2 argumentos 
@@ -19,7 +19,7 @@ const {getMedicos,crearMedico,actualizarMedico,eliminarMedico} = require('../con
   El segundo es un callback que se ejecuta cuando accede a la ruta. El callback recibe dos argumentos
   para una solictud http que son el request (datos de ingreso) y el response (datos de respuesta) 
   Este es el controlador cuando llegue una petición a la ruta /api/medicos */ 
-  router.get('/' , getMedicos);
+  router.get('/', validarJWT , getMedicos);
 
   /* El segundo argumento del router es una coleccion de middlewares que se deben ejecutar */
   router.post('/', 
@@ -38,7 +38,10 @@ const {getMedicos,crearMedico,actualizarMedico,eliminarMedico} = require('../con
   ], actualizarMedico);
 
     /* Ruta para la eliminación de Medicos */
-    router.delete('/:id', eliminarMedico);
+    router.delete('/:id', validarJWT, eliminarMedico);
+
+    /* Ruta para obtener un médico por Id */
+    router.get('/:id', validarJWT, getMedicoById);
 
 module.exports = router;
 
