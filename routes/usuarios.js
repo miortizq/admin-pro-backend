@@ -7,7 +7,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 const { getUsuarios, createUsuarios, updateUsuario, deleteUsuario } = require('../controllers/usuarios');
-const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarJWT, validarRole, validarRole_MismoUsuario } = require('../middlewares/validar-jwt');
 
 /*se identifica el método para ejecutar el endpoint (get, post, put, delete, etc)
   se esperan 2 argumentos 
@@ -31,6 +31,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
   router.put('/:id', 
   [
     validarJWT,
+    validarRole_MismoUsuario,
     check('nombre','El nombre es obligatorio').not().isEmpty(),
     check('email','El email es obligatorio y debe tener el formato correcto').isEmail(),
     check('role','El rol es obligatorio').not().isEmpty(),
